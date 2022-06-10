@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>simple experimental cobrowser{{? !it.master}} (slave){{?}}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/scripts/libs/tree_mirror.js"></script>
+    <script>
+    {{? it.master}}
+        // "master" window has active url bar and links
+        window.MASTER = true
+    {{??}}
+        // "slave" windows act as mirrors: url bar is disabled,
+        // clicking on links doesn't do anything
+        window.SLAVE = true
+    {{?}}
+    </script>
+
+</head>
+<body>
+    <div id="chrome">
+        <form action="/content" target="content" method="post" id="urlForm">
+            <input id="awesomebar" name="url" type="text"
+                   {{? it.master}}placeholder="Go to website" autofocus{{??}}disabled{{?}}>
+        </form>
+    </div>
+    <div id="contentWrap">
+        <iframe id="content" name="content" src="{{? !it.master}}/content{{?}}" frameborder="0"></iframe>
+    </div>
+    <script src="/scripts/browser.js"></script>
+</body>
+</html>
